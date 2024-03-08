@@ -7,50 +7,52 @@
 .header{
     font-weight: 900;
 }
-/*create post tag form style*/
-.tags-input { 
-    display: inline-block; 
-    position: relative; 
-    border: 1px solid #ccc; 
-    border-radius: 4px; 
-    padding: 5px; 
-    box-shadow: 2px 2px 5px #00000033; 
-    width: 50%; 
-} 
-
-.tags-input ul { 
-    list-style: none; 
-    padding: 0; 
-    margin: 0; 
-} 
-
-.tags-input li { 
-    display: inline-block; 
-    background-color: #f2f2f2; 
-    color: #333; 
-    border-radius: 20px; 
-    padding: 5px 10px; 
-    margin-right: 5px; 
-    margin-bottom: 5px; 
-} 
-
-.tags-input input[type="text"] { 
-    border: none; 
-    outline: none; 
-    padding: 5px; 
-    font-size: 14px; 
-} 
-
-.tags-input input[type="text"]:focus { 
-    outline: none; 
-} 
-
-.tags-input .delete-button { 
-    background-color: transparent; 
-    border: none; 
-    color: #999; 
-    cursor: pointer; 
-    margin-left: 5px; 
+.admin-icons{
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+.js-example-basic-single{
+    padding:0px 400px;
+}
+.js-example-tokenizer{
+    padding:0px 400px;
+}
+.form_button{
+    margin:20px 0px; 
+    padding:10px 30px;
+}
+/*pop up form*/
+.form {
+    display: none; /* starts out with a display of none so it can be changed to block on click */
+    background-color: rgba(193, 192, 193, .5);
+    height: 80vh;
+    width: 80vw;
+    position: fixed;
+    z-index: 2; /* will be displayed in front of background */
+    top: 5vh;
+    left: 0;
+    right: 0;
+    margin: auto;
+    text-align: center;
+}
+.form-show {
+    display: block; /* this class is added when the form button is clicked, making the form appear */
+}
+.open-form-button {
+    background-color: lightblue;
+    height: 25px;
+    width: 100px;
+    text-align: center;
+}
+.open-form-button:hover {
+    cursor: pointer;
+}
+.form-background {
+    display: none; /* starts out with display of none so it can be changed to block on click */
+    position: fixed; /* stays on screen despite scroll */
+    width: 100%; /* covers entire width of screen */
+    height: 100%; /* covers entire height of screen */
+    z-index: 1; /* will be displayed behind background */
 }
 /*footer style*/
 footer {
