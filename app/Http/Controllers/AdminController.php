@@ -5,6 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Comment;
+use App\Models\Tag;
+use App\Models\Category;
+use App\Models\Admin;
+use Illuminate\Support\Facades\Hash;
+
+
 
 class AdminController extends Controller
 {
@@ -23,11 +29,68 @@ class AdminController extends Controller
         $posts = Post::orderBy('created_at','desc')->get();
         return view('admin.posts', ["posts"=> $posts]);
     }
+    public function create_post(){
+        return view('admin.create_post');
+    }
+    public function store_post(Request $request){
+
+        // print_r($_POST);
+        // exit;
+        $post = new Post();
+        $post->title = request('post_title');
+        $post->author = auth()->user()->name;
+        $post->category = request("category");
+        $post->views = 0;
+        //get the image
+        //Stores the filename as it was on the client computer.
+
+        $request->validate([
+            "post_img" =>['image']
+        ]);
+        $fileName = $request->file('post_img')->getClientOriginalName();
+        // /storage/ for the public file like css public/storage/images/file.ext
+        // php artisan storage:link
+        $path = "/storage/".$request->file('post_img')->storeAs('images', $fileName, 'public');
+        $post->img = $path;
+        //assigning the tags
+        if(is_null($request->input("tags"))){
+            $post->tags=["0"];
+        }else{
+            $post->tags = $request->input("tags"); //request(states) not working instead $request->input("states") works fine 
+            // check for every tag if it is not in database add to database
+            foreach($request->input("tags") as $tag){
+                $tag_exists = Tag::where("name", $tag)->exists();
+                if(!$tag_exists){
+                    // tag not exists then add it to database
+                    $added_tag = new Tag();
+                    $added_tag->name = $tag;
+                    $added_tag->save();
+                }
+            } 
+        
+        }
+        //assigning content
+        $post->content = request("editor1");
+
+        $post->save();
+
+        $posts = Post::orderBy('created_at','desc')->get();
+        return view('admin.posts', ["posts"=> $posts]);
+    }
     public function categories(){
-        return view('admin.categories');
+        $categories = Category::all();
+        return view('admin.categories', ["categories"=>$categories]);
+    }
+    public function add_category(){
+        $category = new Category();
+        $category->name = request("category_name");
+        $category->save();
+        $categories = Category::all();
+        return view('admin.categories', ["categories"=>$categories]);
     }
     public function media(){
-        return view('admin.media');
+        $posts = Post::orderBy('created_at','desc')->select(['img'])->get();
+        return view('admin.media', ['posts'=>$posts]);
     }
     public function comments(){
         $comments = Comment::orderBy('created_at','desc')->where("is_approved", 0)->get();
@@ -48,55 +111,22 @@ class AdminController extends Controller
         return view('admin.comments', ['comments'=>$comments]);
     }
     public function tags(){
-        return view('admin.tags');
+        $tags = Tag::all();
+        return view('admin.tags', ['tags'=>$tags]);
     }
     public function admins(){
-        return view('admin.admins');
+        $admins = Admin::all();
+        return view('admin.admins', ['admins'=>$admins]);
     }
-    public function create_post(){
-        return view('admin.create_post');
+    public function store_admin(){
+        $admin = new Admin();
+        $admin->name = htmlentities(request("name"));
+        $admin->permission = htmlentities(request("permission"));
+        $password = Hash::make(request("password"));
+        $admin->password = $password;
+        $admin->save();
+        $admins = Admin::all();
+        return view('admin.admins', ['admins'=>$admins]);
     }
-    public function store_post(){
-
-        // print_r($_POST);
-        // exit;
-        $post = new Post();
-        $post->title = request('post_title');
-        $post->author = "alaa";
-        $post->category = request("category");
-        $post->views = 0;
-        //get the image
-        //Stores the filename as it was on the client computer.
-        $imagename = $_FILES['post_img']['name'];
-        //Stores the filetype e.g image/jpeg
-        $imagetype = $_FILES['post_img']['type'];
-        //Stores any error codes from the upload.
-        $imageerror = $_FILES['post_img']['error'];
-        //Stores the tempname as it is given by the host when uploaded.
-        $imagetemp = $_FILES['post_img']['tmp_name'];
-        //The path you wish to upload the image to
-        $imagePath = "C:\Users\Alaa\Documents\laravel\blogger\public\imgs\\";
-
-        if(is_uploaded_file($imagetemp)) {
-            if(move_uploaded_file($imagetemp, $imagePath . $imagename)) {
-                //it's ok
-            }
-            else {
-                echo "Failed to move your image.";
-            }
-        }
-        else {
-            echo "Failed to upload your image.";
-        }
-        $post->img = $imagename;
-        var_dump(request("category"));
-        var_dump(request("states[]"));
-        $post->tags = 4;
-        $post->content = request("editor1");
-
-        // $post->save();
-
-        $posts = Post::orderBy('created_at','desc')->get();
-        return view('admin.posts', ["posts"=> $posts]);
-    }
+    
 }

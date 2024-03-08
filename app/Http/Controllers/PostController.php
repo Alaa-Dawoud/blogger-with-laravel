@@ -10,8 +10,26 @@ class PostController extends Controller
 {
     //
     public function index(){
+        if(!is_null(request("search"))){
+            $searched_word = htmlentities(request("search"));
+            $posts = Post::where("title","like","%{$searched_word}%")->orderBy("created_at","desc")->get();
+            $title = "Search for ".$searched_word;
+            return view("posts.index", ["posts"=>$posts, "title"=>$title, "header"=>$title]);
+        }
         $posts = Post::orderBy("created_at","desc")->get();
-        return view("posts.index", ["posts"=>$posts]);
+        $title = "Blogger";
+        $header = "Welcome to Blogger Webpage";
+        return view("posts.index", ["posts"=>$posts, "title"=>$title, "header"=>$header]);
+    }
+    public function show_category($category_name){
+        $title = $category_name." Posts";
+        $posts = Post::where("category", $category_name)->orderBy("created_at","desc")->get();
+        return view("posts.index", ["posts"=>$posts, "title"=>$title, "header"=>$title]);
+    }
+    public function show_tag($tag_name){
+        $title = $tag_name." Posts";
+        $posts = Post::whereJsonContains("tags", $tag_name)->orderBy("created_at","desc")->get();
+        return view("posts.index", ["posts"=>$posts, "title"=>$title, "header"=>$title]);
     }
     public function show($post_url){
         //get the id from post_url until it reaches the first - in url
