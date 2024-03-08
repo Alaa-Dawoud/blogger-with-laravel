@@ -1,3 +1,7 @@
+@php
+use App\Models\Tag;
+use App\Models\Category;
+@endphp
 @extends('layouts.admin')
 
 @section('title')
@@ -26,31 +30,35 @@
                 
             </select> --}}
             <select class="js-example-basic-single" name="category">
-                <option value="hosting">Hosting</option>
-                <option value="vps">VPS</option>
-                <option value="gaming">Gaming</option>
+                <!--get categories from database-->
+                @php
+                    $categories = Category::all();
+                @endphp
+                @foreach ($categories as $category)
+                    <option value={{$category->name}}>{{$category->name}}</option>
+                @endforeach
             </select>
         </div>
-        <label class="form-label mt-4">Page Tags :</label>
-        {{-- <div class="tags-input"> 
-            
-            <ul id="tags"></ul> 
-            <input type="text" id="input-tag"
-                placeholder="Enter tag name"/> 
-        </div> --}}
-        <select class="js-example-basic-multiple" name="states[]" multiple="multiple">
-            <option value="AL">Alabama</option>
-            <option value="Ha">Hawaii</option>
-            <option value="Ca">California</option>
-            <option value="WY">Wyoming</option>
-        </select>
+
+        <div>
+            <label for="tags[]" class="form-label mt-4">Page Tags :</label>
+            <select class="js-example-tokenizer" name="tags[]" multiple="multiple">
+                <!--get tags from database-->
+                @php
+                    $tags = Tag::all();
+                @endphp
+                @foreach ($tags as $tag)
+                    <option value={{$tag->name}}>{{$tag->name}}</option>
+                @endforeach
+            </select>
+        </div>
         <div>
             <label for="editor1" class="form-label mt-4">Post Content :</label>
             <textarea name="editor1" id="editor1" rows="10" cols="80" placeholder="Enter your post content here" required></textarea>
         </div>
 
         
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary form_button">Submit</button>
     </fieldset>
 </form>
 @endsection
@@ -60,7 +68,10 @@
 <script> 
     $(document).ready(function() {
         $('.js-example-basic-single').select2();
-        $('.js-example-basic-multiple').select2();
+        $('.js-example-tokenizer').select2({
+            tags: true,
+            tokenSeparators: [',']
+        });
     });
 </script>
 <!--
