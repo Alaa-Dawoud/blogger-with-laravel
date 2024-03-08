@@ -1,3 +1,7 @@
+@php
+    use App\Models\Category;
+    use App\Models\Tag;
+@endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
   <head>
@@ -25,13 +29,31 @@
             <!--search, categories and tags goes here-->
             <div class="col col-lg-4 col-md-auto col-sm-auto" style="margin-top: 120px;">
                 <div>
-                    <h3>search bar goes here</h3>
+                    <form action="/blog" method="GET">
+                        <input type="text" name="search" class="form-control" placeholder="Search...">
+                    </form>
                 </div>
                 <div>
-                    <h3>categories goes here</h3>
+                    <h3 style="margin-top: 8px;">Categories</h3>
+                    <hr>
+                    <ul>
+                        @php
+                            $categories = Category::all();
+                        @endphp
+                        @foreach ($categories as $category)
+                            <a href={{"/blog/category/".$category->name}}><li>{{$category->name}}</li></a>
+                        @endforeach
+                    </ul>
                 </div>
                 <div>
-                    <h3>tags goes here</h3>
+                    <h3>Tags</h3>
+                    <hr>
+                    @php
+                        $tags = Tag::all();
+                    @endphp
+                    @foreach ($tags as $tag)
+                        <span><a class="btn btn-secondary" style="border-radius: 1rem;" href={{"/blog/tag/".$tag->name}}>{{$tag->name}}</a></span>
+                    @endforeach
                 </div>
             </div>
         </div>
