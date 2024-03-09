@@ -52,7 +52,10 @@
                         $tags = Tag::all();
                     @endphp
                     @foreach ($tags as $tag)
-                        <span><a class="btn btn-secondary" style="border-radius: 1rem;" href={{"/blog/tag/".$tag->name}}>{{$tag->name}}</a></span>
+                        @php
+                            $tag_url = str_replace(" ", "%20", $tag->name);
+                        @endphp
+                        <span><a class="btn btn-secondary" style="border-radius: 1rem;" href={{"/blog/tag/".$tag_url}}>{{$tag->name}}</a></span>
                     @endforeach
                 </div>
             </div>
