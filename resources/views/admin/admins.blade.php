@@ -8,33 +8,48 @@
 <h3>
     Admins
 </h3>
-<form action="/blog/admin/admins" method="POST">
-    @csrf
-    <div id="form" class="form">
-        <h2>Add new Admin:</h2>
-        <fieldset>
-            <div>
-                <label for="exampleSelect1" class="form-label mt-4 float-start"><strong>Permission: </strong></label>
-                <select class="form-select" id="exampleSelect1" name="permission">
-                  <option value="Admin">Admin</option>
-                  <option value="Super Admin">Super Admin</option>
-                </select>
-              </div>
-            <div>
-                <label class="col-form-label mt-4 float-start" for="inputDefault"><strong> Name:</strong></label>
-                <input type="text" name="name" class="form-control" placeholder="Enter your name" id="inputDefault" required>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    New Admin
+</button>
+  
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Add new admin</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div>
-                <label class="col-form-label mt-4 float-start" for="inputDefault"><strong> Password:</strong></label>
-                <input type="password" name="password" class="form-control" placeholder="Enter your password" id="inputDefault" required>
-            </div>
-    
-            <button type="submit" class="btn btn-primary form_button">Add</button>
-        </fieldset>
+            <form action="/blog/admin/admins" method="POST">
+            @csrf
+                <div class="modal-body">
+                    <fieldset>
+                        <div>
+                            <label for="exampleSelect1" class="form-label mt-4 float-start">Permission:</label>
+                            <select class="form-select" id="exampleSelect1" name="permission">
+                                <option value="Admin">Admin</option>
+                                <option value="Super Admin">Super Admin</option>
+                            </select>
+                            </div>
+                        <div>
+                            <label class="col-form-label mt-4 float-start" for="inputDefault">Name:</label>
+                            <input type="text" name="name" class="form-control" placeholder="Enter your name" id="inputDefault" required>
+                        </div>
+                        <div>
+                            <label class="col-form-label mt-4 float-start" for="inputDefault">Password:</label>
+                            <input type="password" name="password" class="form-control" placeholder="Enter your password" id="inputDefault" required>
+                        </div>
+                    </fieldset>                
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </form>
+        </div>
     </div>
-    <div id="form-bg" class="form-background" onclick="closeForm()"></div>
-    <div id="button" class="btn btn-primary" onclick="openForm()">New Admin</div>
-</form>
+</div>
 <table class="table table-hover">
     <thead>
       <tr>
@@ -56,16 +71,4 @@
     </tbody>
 </table>
 
-@endsection
-@section('form_scripts')
-<script>
-    function openForm() {
-        document.getElementById("form").classList.toggle("form-show");
-        document.getElementById("form-bg").style.display = "block";
-    }
-    function closeForm() {
-        document.getElementById("form").classList.toggle("form-show");
-        document.getElementById("form-bg").style.display = "none";
-    }
-</script>
 @endsection
