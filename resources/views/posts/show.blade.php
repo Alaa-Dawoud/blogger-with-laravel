@@ -28,7 +28,8 @@
                 {{isset($comments)?count($comments):0}}
             </span>
         </div>
-        <div style="margin-top: 15px;"><p>{{strip_tags($post->content)}}</p></div>
+        <!-- we use {! html !} in blade to make browser compile html tags that came from ck editor-->
+        <div style="margin-top: 15px;">{!! $post->content !!}</div>
         
         <hr>
     </div>
