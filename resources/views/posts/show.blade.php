@@ -28,7 +28,7 @@
                 {{isset($comments)?count($comments):0}}
             </span>
         </div>
-        <!-- we use {! html !} in blade to make browser compile html tags that came from ck editor-->
+        <!-- we use {! html !} in blade to make browser compile html tags that came from cke editor-->
         <div style="margin-top: 15px;">{!! $post->content !!}</div>
         
         <hr>
