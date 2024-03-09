@@ -70,6 +70,10 @@
             </div>
         </div>
         <div style="margin-left:25%">
+            <form action="/blog/admin/logout" method="POST">
+              @csrf
+              <button type="submit" class="btn btn-danger float-end" style="margin: 2%;">Logout</button>
+            </form>
             @yield('content')
         </div>
 
