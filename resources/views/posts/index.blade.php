@@ -19,7 +19,7 @@
             @php
                 $post_url = strval($post->id)."-". str_replace(" ","-",$post->title);
                 $post_url = "/blog/".$post_url;
-                $content = substr(strip_tags($post->content), 0, 480);
+                $sub_content = substr(strip_tags(html_entity_decode($post->content)), 0, 480);
             @endphp
             
             <a href={{ $post_url }}><img src={{ asset($post->img) }} alt="post_img" width="700" height="400"></a>
@@ -34,7 +34,7 @@
                     {{count(Comment::where([["post_id",$post->id],["is_approved", 1]])->get())}}
                 </span>
             </div>
-            <p>{{$content}}...</p>
+            <p>{{$$sub_content}}...</p>
             <h4><a href="{{ $post_url }}" class="btn">Read More ></a></h4>
             
             <hr>
