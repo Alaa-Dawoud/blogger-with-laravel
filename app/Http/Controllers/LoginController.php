@@ -27,5 +27,14 @@ class LoginController extends Controller
  
         return redirect()->route('login')->with('error', 'Invalid user name or password')->withInput();
     }
+    public function logout(Request $request){
+        Auth::logout();
+    
+        $request->session()->invalidate();
+    
+        $request->session()->regenerateToken();
+    
+        return redirect('/blog');
+    }
     
 }
