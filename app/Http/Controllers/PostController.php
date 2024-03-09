@@ -27,6 +27,8 @@ class PostController extends Controller
         return view("posts.index", ["posts"=>$posts, "title"=>$title, "header"=>$title]);
     }
     public function show_tag($tag_name){
+        // get the tag whout %20 after it passed from url
+        $tag_name = str_replace("%20", " ", $tag_name);
         $title = $tag_name." Posts";
         $posts = Post::whereJsonContains("tags", $tag_name)->orderBy("created_at","desc")->get();
         return view("posts.index", ["posts"=>$posts, "title"=>$title, "header"=>$title]);
